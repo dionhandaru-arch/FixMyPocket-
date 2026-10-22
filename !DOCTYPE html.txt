@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixMyPocket - Pengelolaan Keuangan Remaja</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen py-0 sm:py-6">
+
+    <!-- App Container -->
+    <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl flex flex-col justify-between sm:rounded-3xl overflow-hidden">
+
+        <!-- AUTH SCREEN (Sign In / Login) -->
+        <div id="authScreen" class="flex-1 flex flex-col">
+            
+            <!-- GAMBAR SAMPUL ABU-ABU / HERO IMAGE -->
+            <div class="w-full h-48 bg-slate-800 overflow-hidden relative">
+                <!-- Menyandarkan ke file hero.jpg, jika belum ada gambar maka otomatis pakai tampilan cadangan -->
+                <img src="hero.jpg" alt="Sugeng Rawuh FixMyPocket" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80';">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-4">
+                    <h1 class="text-white text-xl font-bold">FixMyPocket</h1>
+                </div>
+            </div>
+
+            <div class="p-6 flex-1 flex flex-col">
+                <div class="text-center mb-6">
+                    <p class="text-slate-500 text-xs">Platform Pengelolaan Keuangan Remaja</p>
+                </div>
+
+                <!-- Tab Switcher -->
+                <div class="flex bg-slate-100 p-1 rounded-xl mb-6">
+                    <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-slate-800">Daftar Akun</button>
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-500">Masuk (Login)</button>
+                </div>
+
+                <!-- Form -->
+                <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4 mb-8">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Email</label>
+                        <input type="email" id="authEmail" required placeholder="nama@email.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Kata Sandi</label>
+                        <input type="password" id="authPassword" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    </div>
+                    <button type="submit" id="authSubmitBtn" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">
+                        Daftar Akun Baru
+                    </button>
+                </form>
+
+                <!-- TEKS EKSPLANASI & ARGUMENTATIVE TEXT -->
+                <div class="space-y-6 pt-6 border-t border-slate-200 text-left">
+                    
+                    <!-- TEKS EKSPLANASI (BAHASA INDONESIA) -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h3 class="font-bold text-xs text-slate-900 uppercase border-b border-slate-200 pb-2">Teks Eksplanasi: FixMyPocket</h3>
+                        
+                        <div>
+                            <h4 class="font-bold text-[11px] text-slate-700">Pernyataan Umum</h4>
+                            <p class="text-[11px] text-slate-600 leading-relaxed text-justify mt-0.5">
+                                FixMyPocket adalah platform web pengelolaan keuangan bagi remaja yang berfungsi mencatat pengeluaran dan pemasukan harian. Dengan memanfaatkan fitur tersebut yang disediakan dengan alur yang mudah, mulai dari mendaftar akun, menginput uang saku awal, hingga rutin mencatat keluarnya uang, pengguna dapat memperoleh manfaat nyata berupa meningkatnya disiplin finansial, terhindar dari risiko kehabisan uang sebelum waktunya (overspending), serta kemudahan akses kapan saja. Secara keseluruhan, web ini hadir sebagai solusi praktis untuk mengubah kebiasaan konsumtif remaja menjadi lebih terencana, teratur, mandiri, dan bijak dalam mengelola keuangan.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-[11px] text-slate-700">Deretan Penjelas</h4>
+                            <p class="text-[11px] text-slate-600 leading-relaxed text-justify mt-0.5">
+                                Proses pengelolaan keuangan pada web ini diawali dengan pembuatan akun dan pengisian data singkat berupa status serta nominal uang saku mingguan yang didapatkan. Sistem akan secara otomatis membagi nominal tersebut ke dalam tiga bagian yang berbeda yaitu 50% untuk kebutuhan pokok, 30% untuk jajan, dan 20% untuk tabungan. Selanjutnya, setiap kali pengguna mencatat pengeluaran atau menambah pemasukan baru, sistem akan memproses perhitungan secara langsung. Jumlah uang pada bagian kebutuhan dan tabungan akan diakumulasikan, sedangkan alokasi jajan akan diperbarui secara teratur. Melalui mekanismenya yang sangat responsif ini, pengguna dapat memantau ketercukupan saldo tabungan saat ingin mengincar wishlist atau barang impian, serta dapat mengontrol pengeluaran harian agar tidak melebihi batas alokasi.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-[11px] text-slate-700">Interpretasi</h4>
+                            <p class="text-[11px] text-slate-600 leading-relaxed text-justify mt-0.5">
+                                Secara keseluruhan, web FixMyPocket memberikan dampak positif dalam membentuk kedisiplinan finansial bagi remaja. Dengan alur pencatatan yang mudah dan sistematis, remaja dapat terhindar dari risiko kehabisan uang (overspending). Web ini menjadi solusi praktis dalam mengubah kebiasaan remaja yang impulsif menjadi pola hidup yang lebih terencana, bijak, dan bertanggung jawab.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ARGUMENTATIVE TEXT (ENGLISH) -->
+                    <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 space-y-3">
+                        <h3 class="font-bold text-xs text-emerald-900 uppercase border-b border-emerald-200 pb-2">Argumentative Text: FixMyPocket</h3>
+                        <p class="font-semibold text-xs text-emerald-800">Empowering Teenagers Toward Financial Literacy and Discipline</p>
+                        
+                        <p class="text-[11px] text-slate-600 leading-relaxed text-justify">
+                            Teenagers today face a constant temptation to spend, mostly driven by online trends and social pressure. Without a proper way to keep track of their money, many young people run out of allowance far too early in the month. To solve this issue, FixMyPocket offers a straightforward web platform designed for daily income and expense tracking, making it an essential tool for helping youth build discipline, independence, and smart spending habits.
+                        </p>
+
+                        <p class="text-[11px] text-slate-600 leading-relaxed text-justify">
+                            The platform works because it removes the friction usually associated with budgeting. Managing money often feels boring or complicated to younger users, but starting out here takes only a few simple steps. Users can quickly create an account, set their initial allowance, and start logging daily purchases in just a few seconds. Because the web application is accessible anywhere and anytime, keeping up with daily transactions becomes a seamless habit rather than a tedious task.
+                        </p>
+
+                        <p class="text-[11px] text-slate-600 leading-relaxed text-justify">
+                            More importantly, routine tracking gives teenagers clear visibility into where their money actually goes. When students do not track their spending, small daily purchases add up without them realizing it until their pockets are empty. By routinely inputting every expense, teenagers gain immediate awareness of their cash flow. This visibility helps them curb impulse buying, avoid overspending before their next allowance, and stay accountable for their financial choices.
+                        </p>
+
+                        <p class="text-[11px] text-slate-600 leading-relaxed text-justify">
+                            In the long run, learning to manage pocket money early prepares teenagers for real world financial responsibilities. Using FixMyPocket encourages young users to move away from impulsive spending toward deliberate, goal oriented habits. By turning daily tracking into a simple routine, the platform provides a practical and effective solution to help the younger generations grow into financially wise and independent individuals.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ONBOARDING SCREEN -->
+        <div id="onboardingScreen" class="hidden p-6 flex-1 flex flex-col justify-center">
+            <div class="mb-6">
+                <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Langkah Awal</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1">Pengaturan Akun</h2>
+                <p class="text-slate-500 text-sm mt-1">Masukkan status dan pemasukan mingguan Anda.</p>
+            </div>
+
+            <form onsubmit="handleOnboarding(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Status Saat Ini</label>
+                    <select id="userStatus" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white">
+                        <option value="" disabled selected>Pilih Status...</option>
+                        <option value="Pelajar/Mahasiswa">Pelajar / Mahasiswa</option>
+                        <option value="Pekerja">Pekerja</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Pendapatan Mingguan (Rp)</label>
+                    <input type="number" id="initialIncome" required min="1000" placeholder="Contoh: 100000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    <p class="text-[11px] text-slate-400 mt-1">*Nominal ini otomatis dibagi: 50% Kebutuhan, 30% Jajan, 20% Tabungan.</p>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition shadow-md">
+                    Mulai Kelola Keuangan
+                </button>
+            </form>
+        </div>
+
+        <!-- MAIN DASHBOARD -->
+        <div id="dashboardScreen" class="hidden flex-1 flex flex-col">
+            <!-- Header -->
+            <div class="bg-emerald-700 p-6 text-white rounded-b-3xl shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <p class="text-emerald-100 text-xs">Selamat Datang,</p>
+                        <h3 id="userDisplayEmail" class="font-bold text-base truncate max-w-[180px]">user@email.com</h3>
+                        <span id="userDisplayStatus" class="inline-block mt-0.5 px-2 py-0.5 bg-emerald-800 rounded text-[10px] font-medium text-emerald-100">Pelajar</span>
+                    </div>
+                    <button onclick="logout()" class="px-3 py-1.5 bg-emerald-800 hover:bg-emerald-900 rounded-lg text-xs font-semibold text-emerald-100 transition">
+                        Keluar
+                    </button>
+                </div>
+
+                <!-- Total Saldo -->
+                <div class="pt-2 border-t border-emerald-600">
+                    <p class="text-xs text-emerald-100">Total Saldo Aktif</p>
+                    <h2 id="totalBalance" class="text-2xl font-bold">Rp 0</h2>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="p-6 space-y-6 flex-1 overflow-y-auto">
+
+                <!-- 3 Alokasi Cards -->
+                <div class="grid grid-cols-3 gap-2">
+                    <!-- Kebutuhan Pokok (50%) -->
+                    <div class="bg-blue-50 p-3 rounded-2xl border border-blue-100">
+                        <span class="text-xs text-blue-600 font-semibold block">Kebutuhan</span>
+                        <span class="text-[10px] text-blue-400 block mb-1">50% (Akumulatif)</span>
+                        <p id="saldoKebutuhan" class="text-xs font-bold text-blue-900 truncate">Rp 0</p>
+                    </div>
+
+                    <!-- Jajan (30%) -->
+                    <div class="bg-amber-50 p-3 rounded-2xl border border-amber-100">
+                        <span class="text-xs text-amber-600 font-semibold block">Jajan</span>
+                        <span class="text-[10px] text-amber-500 block mb-1">30% (Diperbarui)</span>
+                        <p id="saldoJajan" class="text-xs font-bold text-amber-900 truncate">Rp 0</p>
+                    </div>
+
+                    <!-- Menabung (20%) -->
+                    <div class="bg-emerald-50 p-3 rounded-2xl border border-emerald-100">
+                        <span class="text-xs text-emerald-600 font-semibold block">Tabungan</span>
+                        <span class="text-[10px] text-emerald-500 block mb-1">20% (Akumulatif)</span>
+                        <p id="saldoTabungan" class="text-xs font-bold text-emerald-900 truncate">Rp 0</p>
+                    </div>
+                </div>
+
+                <!-- Tambah Pendapatan Mingguan Baru -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2">Tambah Pemasukan Minggu Ini</h4>
+                    <form onsubmit="handleAddIncome(event)" class="flex gap-2">
+                        <input type="number" id="newIncomeInput" required min="1000" placeholder="Nominal Rp" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                        <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition">
+                            Tambah
+                        </button>
+                    </form>
+                    <p class="text-[10px] text-slate-400 mt-1.5">*Tabungan & Kebutuhan bertambah. Alokasi jajan akan diperbarui sesuai alokasi baru ini.</p>
+                </div>
+
+                <!-- Fitur Target Barang Incaran (Wishlist) -->
+                <div class="border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase">Barang Incaran (Wishlist)</h4>
+                        <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">Dari Tabungan</span>
+                    </div>
+
+                    <!-- Target Form -->
+                    <form onsubmit="handleSaveTarget(event)" class="space-y-2">
+                        <input type="text" id="targetNameInput" required placeholder="Nama barang (misal: Sepatu)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <div class="flex gap-2">
+                            <input type="number" id="targetPriceInput" required min="1000" placeholder="Harga Rp (misal: 1000000)" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button type="submit" class="px-3 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900 transition">
+                                Simpan Target
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Target Display Status -->
+                    <div id="targetDisplayCard" class="hidden p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p id="targetItemName" class="font-bold text-xs text-slate-800">Nama Barang</p>
+                                <p id="targetItemPrice" class="text-xs text-slate-500">Harga: Rp 0</p>
+                            </div>
+                            <span id="targetStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full">Status</span>
+                        </div>
+
+                        <!-- Motivating Message -->
+                        <p id="targetMotivationText" class="text-xs font-medium text-center py-1"></p>
+
+                        <!-- Buy Button -->
+                        <button id="buyTargetBtn" onclick="handleBuyTarget()" class="hidden w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition">
+                            Beli Sekarang (Potong Tabungan)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pengeluaran Kebutuhan Pokok -->
+                <div class="border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase">Catat Pengeluaran Kebutuhan</h4>
+                    <form onsubmit="handleExpenseNeeds(event)" class="space-y-2">
+                        <input type="text" id="expenseDesc" required placeholder="Keterangan (Transportasi, Tagihan, Makanan)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div class="flex gap-2">
+                            <input type="number" id="expenseAmount" required min="100" placeholder="Nominal Rp" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition">
+                                Catat
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let currentAuthMode = 'register';
+        let currentUser = null;
+        let dbUsers = JSON.parse(localStorage.getItem('yf_users') || '{}');
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+        }
+
+        window.onload = function() {
+            const activeUser = localStorage.getItem('yf_active_user');
+            if (activeUser && dbUsers[activeUser]) {
+                currentUser = activeUser;
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        };
+
+        function switchAuthTab(mode) {
+            currentAuthMode = mode;
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if (mode === 'register') {
+                regBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-slate-800";
+                loginBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-500";
+                submitBtn.innerText = "Daftar Akun Baru";
+            } else {
+                loginBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-slate-800";
+                regBtn.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-500";
+                submitBtn.innerText = "Masuk ke Akun";
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim().toLowerCase();
+            const password = document.getElementById('authPassword').value;
+
+            if (currentAuthMode === 'register') {
+                if (dbUsers[email]) {
+                    alert('Email sudah terdaftar! Silakan login.');
+                    return;
+                }
+                dbUsers[email] = {
+                    password: password,
+                    status: '',
+                    isOnboarded: false,
+                    saldoKebutuhan: 0,
+                    saldoJajan: 0,
+                    saldoTabungan: 0,
+                    targetItem: null
+                };
+                localStorage.setItem('yf_users', JSON.stringify(dbUsers));
+                currentUser = email;
+                localStorage.setItem('yf_active_user', email);
+                showOnboarding();
+            } else {
+                if (!dbUsers[email] || dbUsers[email].password !== password) {
+                    alert('Email atau kata sandi salah!');
+                    return;
+                }
+                currentUser = email;
+                localStorage.setItem('yf_active_user', email);
+                
+                if (!dbUsers[email].isOnboarded) {
+                    showOnboarding();
+                } else {
+                    showDashboard();
+                }
+            }
+        }
+
+        function handleOnboarding(e) {
+            e.preventDefault();
+            const status = document.getElementById('userStatus').value;
+            const income = parseFloat(document.getElementById('initialIncome').value);
+
+            if (!status || isNaN(income)) return;
+
+            let user = dbUsers[currentUser];
+            user.status = status;
+            user.isOnboarded = true;
+
+            user.saldoKebutuhan = income * 0.5;
+            user.saldoJajan = income * 0.3;
+            user.saldoTabungan = income * 0.2;
+
+            saveData();
+            showDashboard();
+        }
+
+        function handleAddIncome(e) {
+            e.preventDefault();
+            const input = document.getElementById('newIncomeInput');
+            const amount = parseFloat(input.value);
+
+            if (isNaN(amount) || amount <= 0) return;
+
+            let user = dbUsers[currentUser];
+
+            user.saldoKebutuhan += (amount * 0.5);
+            user.saldoTabungan += (amount * 0.2);
+            user.saldoJajan = (amount * 0.3);
+
+            saveData();
+            updateDashboardUI();
+            input.value = '';
+            alert('Pemasukan baru berhasil ditambahkan.');
+        }
+
+        function handleSaveTarget(e) {
+            e.preventDefault();
+            const name = document.getElementById('targetNameInput').value.trim();
+            const price = parseFloat(document.getElementById('targetPriceInput').value);
+
+            if (!name || isNaN(price) || price <= 0) return;
+
+            dbUsers[currentUser].targetItem = { name, price };
+            saveData();
+            updateDashboardUI();
+            document.getElementById('targetNameInput').value = '';
+            document.getElementById('targetPriceInput').value = '';
+        }
+
+        function handleBuyTarget() {
+            let user = dbUsers[currentUser];
+            if (!user.targetItem) return;
+
+            if (user.saldoTabungan >= user.targetItem.price) {
+                user.saldoTabungan -= user.targetItem.price;
+                alert(`Pembelian ${user.targetItem.name} berhasil dicatat.`);
+                user.targetItem = null;
+                saveData();
+                updateDashboardUI();
+            } else {
+                alert('Saldo tabungan belum mencukupi!');
+            }
+        }
+
+        function handleExpenseNeeds(e) {
+            e.preventDefault();
+            const desc = document.getElementById('expenseDesc').value.trim();
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+
+            if (!desc || isNaN(amount) || amount <= 0) return;
+
+            let user = dbUsers[currentUser];
+
+            if (user.saldoKebutuhan < amount) {
+                alert('Saldo Kebutuhan Pokok tidak mencukupi!');
+                return;
+            }
+
+            user.saldoKebutuhan -= amount;
+            saveData();
+            updateDashboardUI();
+
+            document.getElementById('expenseDesc').value = '';
+            document.getElementById('expenseAmount').value = '';
+            alert(`Pengeluaran "${desc}" sebesar ${formatRupiah(amount)} berhasil dicatat.`);
+        }
+
+        function saveData() {
+            localStorage.setItem('yf_users', JSON.stringify(dbUsers));
+        }
+
+        function showAuth() {
+            document.getElementById('authScreen').classList.remove('hidden');
+            document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+        }
+
+        function showOnboarding() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('onboardingScreen').classList.remove('hidden');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            updateDashboardUI();
+        }
+
+        function updateDashboardUI() {
+            let user = dbUsers[currentUser];
+            if (!user) return;
+
+            document.getElementById('userDisplayEmail').innerText = currentUser;
+            document.getElementById('userDisplayStatus').innerText = user.status || 'Pengguna';
+
+            document.getElementById('saldoKebutuhan').innerText = formatRupiah(user.saldoKebutuhan);
+            document.getElementById('saldoJajan').innerText = formatRupiah(user.saldoJajan);
+            document.getElementById('saldoTabungan').innerText = formatRupiah(user.saldoTabungan);
+
+            const total = user.saldoKebutuhan + user.saldoJajan + user.saldoTabungan;
+            document.getElementById('totalBalance').innerText = formatRupiah(total);
+
+            const targetCard = document.getElementById('targetDisplayCard');
+            if (user.targetItem) {
+                targetCard.classList.remove('hidden');
+                document.getElementById('targetItemName').innerText = user.targetItem.name;
+                document.getElementById('targetItemPrice').innerText = `Harga: ${formatRupiah(user.targetItem.price)}`;
+
+                const motivationText = document.getElementById('targetMotivationText');
+                const badge = document.getElementById('targetStatusBadge');
+                const buyBtn = document.getElementById('buyTargetBtn');
+
+                if (user.saldoTabungan >= user.targetItem.price) {
+                    motivationText.innerText = "Udah cukup nih!";
+                    motivationText.className = "text-xs font-bold text-center py-1 text-emerald-600";
+                    badge.innerText = "Cukup";
+                    badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700";
+                    buyBtn.classList.remove('hidden');
+                } else {
+                    motivationText.innerText = "Yah belum cukup, ayo sedikit lagi!";
+                    motivationText.className = "text-xs font-medium text-center py-1 text-amber-600";
+                    badge.innerText = "Belum Cukup";
+                    badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700";
+                    buyBtn.classList.add('hidden');
+                }
+            } else {
+                targetCard.classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('yf_active_user');
+            currentUser = null;
+            showAuth();
+        }
+    </script>
+</body>
+</html>
